@@ -1,0 +1,4 @@
+.place__button-like_active{
+  background: url(../../../../images/Like-aktive.svg) no-repeat;
+  display: flex;
+}

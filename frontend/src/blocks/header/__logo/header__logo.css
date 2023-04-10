@@ -1,0 +1,16 @@
+.header__logo {
+  align-self: start;
+  width: 104px;
+}
+
+@media screen and (min-width: 768px) {
+  .header__logo {
+    width: 142px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .header__logo {
+    padding: 0;
+  }
+}

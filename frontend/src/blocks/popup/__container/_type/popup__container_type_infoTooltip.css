@@ -1,0 +1,7 @@
+.popup__container_type_infoTooltip {
+  min-height: 330px;
+  min-width: 430px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}

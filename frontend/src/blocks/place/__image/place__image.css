@@ -1,0 +1,13 @@
+.place__image{
+  color: white;
+  background-color: #000;
+  width: 282px;
+  height: 282px;
+  display: block;
+  border-radius: 10px 10px 0 0;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  object-fit: cover;
+  object-position: center;
+  cursor: pointer;
+}
