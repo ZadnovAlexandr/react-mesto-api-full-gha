@@ -48,7 +48,6 @@ app.post('/signin', loginVal, login);
 
 app.use(auth);
 app.use('/', router);
-
 app.use(errorLogger);
 app.use(errors());
 app.use((err, req, res, next) => {
