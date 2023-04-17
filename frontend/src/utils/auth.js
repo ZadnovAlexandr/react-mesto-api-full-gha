@@ -16,6 +16,7 @@ class Auth {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: 'include',
       body: JSON.stringify(data),
     }).then(this._checkError);
   }
@@ -26,23 +27,34 @@ class Auth {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: 'include',
       body: JSON.stringify(data),
     }).then(this._checkError);
   }
 
-  checkAuth(token) {
-    return fetch(`${this._baseURL}/users/me`, {
+  checkAuth() {
+    return fetch(`${this._baseURL}/check`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
+      credentials: 'include',
     }).then(this._checkError);
   }
+
+  signout = () => {
+    return fetch(`${this._baseURL}/signout`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: 'include',
+    }).then(this._checkError);
+  };
 }
 
 const auth = new Auth({
-  baseURL: "https://auth.nomoreparties.co.",
+  baseURL: "http://localhost:3005",
 });
 
 export default auth;

@@ -29,7 +29,7 @@ function App() {
   const [cards, setCards] = useState([]);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isUserEmail, setIsUserEmail] = useState("");
+  const [isUserEmail, setIsUserEmail] = useState(null);
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
   const [isStatus, setIsStatus] = useState("");
   const navigate = useNavigate();
@@ -58,11 +58,25 @@ function App() {
     setIsImagePopupOpen(false);
   };
 
+  const tokenCheck = () => {
+    auth
+    .checkAuth()
+    .then((data) => {
+      setIsLoggedIn(true);
+      setIsUserEmail(data.email);
+      navigate('/');
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
   const getInfo = () =>
     api
       .getUserInfo()
       .then((userInfo) => {
         setCurrentUser(userInfo);
+        setIsUserEmail(userInfo.email);
       })
       .catch((err) => {
         console.log(err);
@@ -78,12 +92,16 @@ function App() {
         setCards(err);
       });
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      getInfo();
-      getCards();
-    }
-  }, [isLoggedIn]);
+      useEffect(() => {
+        tokenCheck();
+      }, []);
+
+      useEffect(() => {
+        if (isLoggedIn) {
+          getInfo();
+          getCards();
+        }
+      }, [isLoggedIn]);
 
   const handleCardLike = (card) => {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
@@ -103,10 +121,10 @@ function App() {
     api
       .deleteCard(card._id)
       .then(() => {
-        setCards((cards) => cards.filter((i) => i._id !== card._id));
+        setCards(cards.filter((item) => item !== card));
       })
       .catch((err) => {
-        console.log(err);
+        console.log(`Ошибка: ${err}`);
       });
   };
 
@@ -150,8 +168,7 @@ function App() {
     (data) => {
       auth
         .signIn(data)
-        .then(({ token }) => {
-          localStorage.setItem("jwt", token);
+        .then(() => {
           setIsLoggedIn(true);
           setIsUserEmail(data.email);
           navigate("/");
@@ -182,31 +199,15 @@ function App() {
     [navigate]
   );
 
-  useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-
-    if (jwt) {
-      auth
-        .checkAuth(jwt)
-        .then((res) => {
-          setIsLoggedIn(true);
-          setIsUserEmail(res.data.email);
-          navigate("/");
-        })
-        .catch((err) => console.log(err));
-    }
-  }, [navigate]);
-
-  function handleSignExit() {
-    localStorage.removeItem("jwt");
-    setIsLoggedIn(false);
-    setIsUserEmail("");
-    navigate("/sign-in");
-  }
-
+  function handleSignExit(){
+    auth.signout().then(() => {
+      setIsLoggedIn(false);
+      navigate('/sign-in');
+    });
+  };
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <body className="page">
+      <div className="page">
         <Header isUserEmail={isUserEmail} onSignExit={handleSignExit} />
         <Routes>
           <Route
@@ -276,7 +277,7 @@ function App() {
               : "Что-то пошло не так! Попробуйте ещё раз."
           }
         />
-      </body>
+      </div>
     </CurrentUserContext.Provider>
   );
 }

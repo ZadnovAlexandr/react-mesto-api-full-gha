@@ -10,6 +10,8 @@ const { login, createUser } = require('./controllers/user');
 const { auth } = require('./middlewares/auth');
 const { cors } = require('./middlewares/cors');
 
+const { requestLogger, errorLogger } = require('./middlewares/logger');
+
 const {
   createUsersVal,
   loginVal,
@@ -31,12 +33,14 @@ mongoose
 app.use(cors);
 app.use(express.json());
 app.use(cookieParser());
+app.use(requestLogger);
 
 app.post('/signup', createUsersVal, createUser);
 app.post('/signin', loginVal, login);
 app.use(auth);
 app.use('/', router);
 
+app.use(errorLogger);
 app.use(errors());
 app.use((err, req, res, next) => {
   const { statusCode = 500 } = err;

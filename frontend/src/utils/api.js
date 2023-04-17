@@ -16,6 +16,7 @@ class Api {
     return fetch(`${this._baseURL}/users/me`, {
       method: "GET",
       headers: this._headers,
+      credentials: "include",
     })
     .then(this._checkError);
   }
@@ -24,20 +25,23 @@ class Api {
     return fetch(`${this._baseURL}/cards`, {
       method: "GET",
       headers: this._headers,
+      credentials: "include",
     })
     .then(this._checkError);
   }
 
-  likeCardStatus(id, isLiked) {
+  likeCardStatus(cardId, isLiked) {
     if (isLiked) {
-        return fetch(`${this._baseURL}/cards/${id}/likes`, {
+        return fetch(`${this._baseURL}/cards/${cardId}/likes`, {
             method: "PUT",
             headers: this._headers,
+            credentials: "include",
         }).then(this._checkError)
     } else {
-        return fetch(`${this._baseURL}/cards/${id}/likes`, {
+        return fetch(`${this._baseURL}/cards/${cardId}/likes`, {
             method: "DELETE",
             headers: this._headers,
+            credentials: "include",
         }).then(this._checkError)
     }
   }
@@ -45,7 +49,8 @@ class Api {
   deleteCard(id) {
     return fetch(`${this._baseURL}/cards/${id}`, {
       method: "DELETE",
-      headers: this._headers
+      headers: this._headers,
+      credentials: "include",
     })
     .then(this._checkError)
   }
@@ -54,6 +59,7 @@ class Api {
     return fetch(`${this._baseURL}/users/me`, {
       method: "PATCH",
       headers: this._headers,
+      credentials: "include",
       body: JSON.stringify({
         name: dataUser.name,
         about: dataUser.about
@@ -66,6 +72,7 @@ class Api {
     return fetch(`${this._baseURL}/users/me/avatar`, {
       method: "PATCH",
       headers: this._headers,
+      credentials: "include",
       body: JSON.stringify({
         avatar: data
       })
@@ -77,6 +84,7 @@ class Api {
     return fetch(`${this._baseURL}/cards`, {
       method: "POST",
       headers: this._headers,
+      credentials: "include",
       body: JSON.stringify({
         name: dataCard.name,
         link: dataCard.link
@@ -84,71 +92,11 @@ class Api {
     })
     .then(this._checkError);
   }
-  /*postCreateCard(dataCard) {
-    return fetch(`${this._baseURL}/cards`, {
-      method: "POST",
-      headers: this._headers,
-      body: JSON.stringify({
-        name: dataCard.name,
-        link: dataCard.link
-      })
-    })
-    .then(this._checkError);
   }
-
-  editUser(dataUser) {
-    return fetch(`${this._baseURL}/users/me`, {
-      method: "PATCH",
-      headers: this._headers,
-      body: JSON.stringify({
-        name: dataUser.name,
-        about: dataUser.profession
-      })
-    })
-    .then(this._checkError);
-  }
-
-  editAvatar(data) {
-    return fetch(`${this._baseURL}/users/me/avatar`, {
-      method: "PATCH",
-      headers: this._headers,
-      body: JSON.stringify({
-        avatar: data.avatarURL
-      })
-    })
-    .then(this._checkError);
-  }
-
-  deleteCard(id) {
-    return fetch(`${this._baseURL}/cards/${id}`, {
-      method: "DELETE",
-      headers: this._headers
-    })
-    .then(this._checkError)
-  }
-
-  addLike(id) {
-    return fetch(`${this._baseURL}/cards/${id}/likes`, {
-      method: "PUT",
-      headers: this._headers,
-    })
-    .then(this._checkError)
-  }
-
-  deleteLike(id) {
-    return fetch(`${this._baseURL}/cards/${id}/likes`, {
-      method: "DELETE",
-      headers: this._headers,
-    })
-    .then(this._checkError)
-  }*/
-
-}
 
 const api = new Api({
-  baseURL: `https://mesto.nomoreparties.co/v1/cohort-56`,
+  baseURL: `http://localhost:3005`,
   headers:{
-    authorization: `a5031a5c-1ebc-4267-88e0-f43b05516ede`,
     "Content-Type": "application/json"
   }
 });
