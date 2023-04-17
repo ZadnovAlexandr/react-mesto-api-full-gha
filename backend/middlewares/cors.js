@@ -1,6 +1,8 @@
 const allowedCors = [
   'https://api.a.zhadnov.nomoredomains.monster',
   'http://api.a.zhadnov.nomoredomains.monster',
+  'https://a.zhadnov.nomoredomains.monster',
+  'http://a.zhadnov.nomoredomains.monster',
   'https://localhost:3000',
   'http://localhost:3000',
 ];
