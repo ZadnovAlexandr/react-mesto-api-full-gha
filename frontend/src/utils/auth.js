@@ -54,7 +54,7 @@ class Auth {
 }
 
 const auth = new Auth({
-  baseURL: "http://api.a.zhadnov.nomoredomains.monster",
+  baseURL: "https://api.a.zhadnov.nomoredomains.monster",
 });
 
 export default auth;
