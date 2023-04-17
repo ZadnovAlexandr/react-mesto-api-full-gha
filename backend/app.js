@@ -1,12 +1,14 @@
+require('dotenv').config();
+
 const { errors } = require('celebrate');
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
+
 const cookieParser = require('cookie-parser');
 const router = require('./routes');
 const { login, createUser } = require('./controllers/user');
 const { auth } = require('./middlewares/auth');
-const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { cors } = require('./middlewares/cors');
 
 const {
   createUsersVal,
@@ -15,7 +17,7 @@ const {
 
 const app = express();
 
-const PORT = 3000;
+const { PORT = 3005 } = process.env;
 
 mongoose
   .connect('mongodb://127.0.0.1:27017/mestodb')
@@ -26,16 +28,15 @@ mongoose
     console.log(`Error dataBase ${err}`);
   });
 
-app.use(bodyParser.json());
+app.use(cors);
+app.use(express.json());
 app.use(cookieParser());
-app.use(requestLogger);
 
 app.post('/signup', createUsersVal, createUser);
 app.post('/signin', loginVal, login);
 app.use(auth);
 app.use('/', router);
 
-app.use(errorLogger);
 app.use(errors());
 app.use((err, req, res, next) => {
   const { statusCode = 500 } = err;

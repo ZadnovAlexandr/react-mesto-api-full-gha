@@ -1,5 +1,8 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+
+require('dotenv').config();
+
 const User = require('../models/user');
 const { STATUS_OK, STATUS_CREATED } = require('../errors/errors');
 
@@ -8,6 +11,8 @@ const ErrorInternalServer = require('../errors/ErrorInternalServer');
 const ErrorNotFound = require('../errors/ErrorNotFound');
 const ErrorUnauthorized = require('../errors/ErrorUnauthorized');
 const ErrorConflict = require('../errors/ErrorConflict');
+
+const { JWT_SECRET, NODE_ENV } = process.env;
 
 const getUsers = (req, res, next) => {
   User.find({})
@@ -125,12 +130,14 @@ const login = (req, res, next) => {
       }
       const data = await bcrypt.compare(password, user.password);
       if (data) {
-        const token = jwt.sign({ _id: user._id }, 'SECRET-KEY', {
+        const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'SECRET-KEY', {
           expiresIn: '7d',
         });
         return res
           .cookie('jwt', token, {
+            maxAge: 3600000,
             httpOnly: true,
+            sameSite: NODE_ENV === 'production' ? true : 'none',
           })
           .send({ message: 'Вход выполнен!' });
       }
@@ -146,6 +153,31 @@ const getUserInfo = (req, res, next) => {
     })
     .catch(next);
 };
+const logout = (req, res, next) => {
+  try {
+    res
+      .clearCookie('jwt', {
+        httpOnly: true,
+        sameSite: NODE_ENV === 'production' ? true : 'none',
+        secure: true,
+      })
+      .send({ message: 'Выход' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const tokenCheck = (req, res) => {
+  const token = req.cookies.jwt;
+
+  try {
+    jwt.verify(token, JWT_SECRET);
+
+    res.send({ authorized: true });
+  } catch (err) {
+    res.send({ authorized: false });
+  }
+};
 
 module.exports = {
   createUser,
@@ -155,4 +187,6 @@ module.exports = {
   updateAvatar,
   login,
   getUserInfo,
+  logout,
+  tokenCheck,
 };
