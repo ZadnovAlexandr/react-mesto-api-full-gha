@@ -3,8 +3,6 @@ const allowedCors = [
   'http://api.a.zhadnov.nomoredomains.monster',
   'https://localhost:3000',
   'http://localhost:3000',
-  'https://localhost:3005',
-  'http://localhost:3005',
 ];
 
 const cors = (req, res, next) => {
