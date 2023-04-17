@@ -9,6 +9,7 @@ const router = require('./routes');
 const { login, createUser } = require('./controllers/user');
 const { auth } = require('./middlewares/auth');
 const { cors } = require('./middlewares/cors');
+const { tokenCheck } = require('./controllers/user');
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
@@ -35,8 +36,16 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(requestLogger);
 
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+
+router.get('/check', tokenCheck);
 app.post('/signup', createUsersVal, createUser);
 app.post('/signin', loginVal, login);
+
 app.use(auth);
 app.use('/', router);
 
