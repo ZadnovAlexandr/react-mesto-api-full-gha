@@ -66,7 +66,7 @@ function App() {
           setIsLoggedIn(false);
         } else if (res.authorized === true) {
           setIsLoggedIn(true);
-          navigate("/", { replace: true });
+          navigate('/', { replace: true });
         }
       })
       .catch((err) => {
@@ -199,7 +199,7 @@ function App() {
     [navigate]
   );
 
-  function handleSignExit() {
+  const handleSignExit = () => {
     auth.signout().then(() => {
       setIsLoggedIn(false);
       navigate('/sign-in');

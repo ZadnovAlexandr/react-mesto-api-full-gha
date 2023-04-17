@@ -12,9 +12,9 @@ class Auth {
 
   signUp(data) {
     return fetch(`${this._baseURL}/signup`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       credentials: 'include',
       body: JSON.stringify(data),
@@ -23,9 +23,9 @@ class Auth {
 
   signIn(data) {
     return fetch(`${this._baseURL}/signin`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       credentials: 'include',
       body: JSON.stringify(data),
@@ -34,9 +34,9 @@ class Auth {
 
   checkAuth() {
     return fetch(`${this._baseURL}/check`, {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       credentials: 'include',
     }).then(this._checkError);
@@ -44,9 +44,9 @@ class Auth {
 
   signout = () => {
     return fetch(`${this._baseURL}/signout`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       credentials: 'include',
     }).then(this._checkError);
@@ -54,7 +54,7 @@ class Auth {
 }
 
 const auth = new Auth({
-  baseURL: "https://api.a.zhadnov.nomoredomains.monster",
+  baseURL: 'https://api.a.zhadnov.nomoredomains.monster',
 });
 
 export default auth;

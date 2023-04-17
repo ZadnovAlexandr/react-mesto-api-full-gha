@@ -1,12 +1,11 @@
 class Api {
-
   constructor(config) {
     this._baseURL = config.baseURL;
     this._headers = config.headers;
   }
 
   _checkError(err) {
-    if(err.ok) {
+    if (err.ok) {
       return err.json();
     }
     return Promise.reject(`Ошибка: ${err.status}`);
@@ -14,91 +13,85 @@ class Api {
 
   getUserInfo() {
     return fetch(`${this._baseURL}/users/me`, {
-      method: "GET",
+      method: 'GET',
       headers: this._headers,
-      credentials: "include",
-    })
-    .then(this._checkError);
+      credentials: 'include',
+    }).then(this._checkError);
   }
 
   getInitialCard() {
     return fetch(`${this._baseURL}/cards`, {
-      method: "GET",
+      method: 'GET',
       headers: this._headers,
-      credentials: "include",
-    })
-    .then(this._checkError);
+      credentials: 'include',
+    }).then(this._checkError);
   }
 
   likeCardStatus(cardId, isLiked) {
     if (isLiked) {
-        return fetch(`${this._baseURL}/cards/${cardId}/likes`, {
-            method: "PUT",
-            headers: this._headers,
-            credentials: "include",
-        }).then(this._checkError)
+      return fetch(`${this._baseURL}/cards/${cardId}/likes`, {
+        method: 'PUT',
+        headers: this._headers,
+        credentials: 'include',
+      }).then(this._checkError);
     } else {
-        return fetch(`${this._baseURL}/cards/${cardId}/likes`, {
-            method: "DELETE",
-            headers: this._headers,
-            credentials: "include",
-        }).then(this._checkError)
+      return fetch(`${this._baseURL}/cards/${cardId}/likes`, {
+        method: 'DELETE',
+        headers: this._headers,
+        credentials: 'include',
+      }).then(this._checkError);
     }
   }
 
   deleteCard(id) {
     return fetch(`${this._baseURL}/cards/${id}`, {
-      method: "DELETE",
+      method: 'DELETE',
       headers: this._headers,
-      credentials: "include",
-    })
-    .then(this._checkError)
+      credentials: 'include',
+    }).then(this._checkError);
   }
 
   editUser(dataUser) {
     return fetch(`${this._baseURL}/users/me`, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: this._headers,
-      credentials: "include",
+      credentials: 'include',
       body: JSON.stringify({
         name: dataUser.name,
-        about: dataUser.about
-      })
-    })
-    .then(this._checkError);
+        about: dataUser.about,
+      }),
+    }).then(this._checkError);
   }
 
   editAvatar(data) {
     return fetch(`${this._baseURL}/users/me/avatar`, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: this._headers,
-      credentials: "include",
+      credentials: 'include',
       body: JSON.stringify({
-        avatar: data
-      })
-    })
-    .then(this._checkError);
+        avatar: data,
+      }),
+    }).then(this._checkError);
   }
 
   postCreateCard(dataCard) {
     return fetch(`${this._baseURL}/cards`, {
-      method: "POST",
+      method: 'POST',
       headers: this._headers,
-      credentials: "include",
+      credentials: 'include',
       body: JSON.stringify({
         name: dataCard.name,
-        link: dataCard.link
-      })
-    })
-    .then(this._checkError);
+        link: dataCard.link,
+      }),
+    }).then(this._checkError);
   }
-  }
+}
 
 const api = new Api({
   baseURL: `https://api.a.zhadnov.nomoredomains.monster`,
-  headers:{
-    "Content-Type": "application/json"
-  }
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
-export default api
+export default api;
