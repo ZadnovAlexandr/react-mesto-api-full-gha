@@ -8,7 +8,7 @@
 
 ## Ссылки на проект
 
-IP-адрес 51.250.3.45
+IP 51.250.3.45
 
 Frontend https://a.zhadnov.nomoredomains.monster
 
