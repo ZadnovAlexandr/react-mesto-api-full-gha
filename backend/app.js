@@ -42,9 +42,9 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-router.get('/check', tokenCheck);
 app.post('/signup', createUsersVal, createUser);
 app.post('/signin', loginVal, login);
+app.get('/check', tokenCheck);
 
 app.use(auth);
 app.use('/', router);
