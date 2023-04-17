@@ -61,13 +61,17 @@ function App() {
   useEffect(() => {
     auth
       .checkAuth()
-      .then((data) => {
-        setIsLoggedIn(true);
-        setIsUserEmail(data.email);
-        navigate('/');
+      .then((res) => {
+        if (res.authorized === false) {
+          setIsLoggedIn(false);
+        } else if (res.authorized === true) {
+          setIsLoggedIn(true);
+          navigate("/", { replace: true });
+        }
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        setIsLoggedIn(false);
+        console.log(err.message);
       });
   }, []);
 
